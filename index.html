@@ -3,40 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowScript | Project SandStorm</title>
+    <title>ShadowEncrypt - بوسعادة</title>
     <style>
-        body { 
-            background: #050505; 
-            color: #00ff41; 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0;
+        body { background-color: #000; color: #0f0; font-family: sans-serif; text-align: center; padding: 20px; }
+        .box { border: 2px solid #0f0; padding: 15px; border-radius: 10px; background: #111; }
+        textarea, input { width: 90%; padding: 10px; margin: 10px 0; background: #000; color: #0f0; border: 1px solid #0f0; }
+        button { width: 45%; padding: 10px; background: #0f0; color: #000; font-weight: bold; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>نظام التشفير السري 🛡️</h2>
+        <input type="number" id="key" value="7" placeholder="المفتاح الرقمي">
+        <textarea id="input" rows="4" placeholder="اكتب رسالتك هنا..."></textarea>
+        <br>
+        <button onclick="run(true)">تشفير</button>
+        <button onclick="run(false)" style="background:#333; color:#0f0;">فك التشفير</button>
+        <br>
+        <p>النتيجة:</p>
+        <textarea id="output" rows="4" readonly></textarea>
+    </div>
+    <script>
+        function run(enc) {
+            let k = parseInt(document.getElementById('key').value);
+            let txt = document.getElementById('input').value;
+            if (!enc) k = -k;
+            document.getElementById('output').value = txt.split('').map(c => String.fromCharCode(c.charCodeAt(0) + k)).join('');
         }
-        .terminal-box { 
-            width: 90%; 
-            max-width: 450px; 
-            border: 2px solid #00ff41; 
-            padding: 20px; 
-            border-radius: 5px; 
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-            background: rgba(0,0,0,0.9);
-        }
-        h2 { text-align: center; font-size: 1.2rem; border-bottom: 1px solid #00ff41; padding-bottom: 10px; }
-        textarea, input { 
-            width: 100%; 
-            background: #000; 
-            color: #00ff41; 
-            border: 1px solid #00ff41; 
-            padding: 10px; 
-            box-sizing: border-box; 
-            margin: 10px 0;
-            outline: none;
-        }
-        .btn-group { display: flex; gap: 10px; }
-        button { 
-            flex: 1; 
-            padding: 12px; 
-            background: #00ff41;
+    </script>
+</body>
+</html>
+
