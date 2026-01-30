@@ -3,42 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowEncrypt - بوسعادة</title>
+    <title>SHADOW v2.0 | نظام التشفير</title>
     <style>
-        body { background-color: #000; color: #0f0; font-family: sans-serif; text-align: center; padding: 20px; }
-        .box { border: 2px solid #0f0; padding: 15px; border-radius: 10px; background: #111; }
-        textarea, input { width: 90%; padding: 10px; margin: 10px 0; background: #000; color: #0f0; border: 1px solid #0f0; }
-        button { width: 45%; padding: 10px; background: #0f0; color: #000; font-weight: bold; border: none; cursor: pointer; }
-    </style>
-</head><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-G19HXS40L5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-G19HXS40L5');
-</script>
-<body>
-    <div class="box">
-        <h2>نظام التشفير السري 🛡️</h2>
-        <input type="number" id="key" value="7" placeholder="المفتاح الرقمي">
-        <textarea id="input" rows="4" placeholder="اكتب رسالتك هنا..."></textarea>
-        <br>
-        <button onclick="run(true)">تشفير</button>
-        <button onclick="run(false)" style="background:#333; color:#0f0;">فك التشفير</button>
-        <br>
-        <p>النتيجة:</p>
-        <textarea id="output" rows="4" readonly></textarea>
-    </div>
-    <script>
-        function run(enc) {
-            let k = parseInt(document.getElementById('key').value);
-            let txt = document.getElementById('input').value;
-            if (!enc) k = -k;
-            document.getElementById('output').value = txt.split('').map(c => String.fromCharCode(c.charCodeAt(0) + k)).join('');
+        /* إعدادات الخلفية والخطوط */
+        body {
+            background: radial-gradient(circle, #0a0a0a 0%, #000000 100%);
+            color: #00ff41;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
-    </script>
+
+        /* حاوية الموقع الزجاجية */
+        .container {
+            background: rgba(0, 255, 65, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        /* تحسين شكل الخانات */
+        textarea, input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ff41;
+            border-radius: 8px;
+            color: #00ff41;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        textarea:focus, input:focus {
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+
+        /* أزرار احترافية */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            background: transparent;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 20px #00ff41;
+        }
+
+        /* منطقة النتيجة */
+        .result-box {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 8px;
+            min-height: 50px;
+            word-break: break-all;
+            border-left: 4px solid #00ff41;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SHADOW DECRYPTOR</h1>
+    
+    <textarea id="inputText" rows="4" placeholder="اكتب رسالتك السرية هنا..."></textarea>
+    
+    <input type="number" id="shift" placeholder="مفتاح التشفير (رقم سري)">
+    
+    <div class="btn-group">
+        <button onclick="process(true)">تشفير</button>
+        <button onclick="process(false)">فك التشفير</button>
+    </div>
+
+    <div class="result-box" id="result">
+        النتيجة ستظهر هنا...
+    </div>
+
+    <div class="footer">
+        تم التصميم بواسطة المبدع من بوسعادة
+    </div>
+</div>
+
+<script>
+    function process(isEncrypt) {
+        let text = document.getElementById('inputText').value;
+        let shift = parseInt(document.getElementById('shift').value);
+        
+        if (isNaN(shift)) {
+            alert("يرجى إدخال رقم في مفتاح التشفير");
+            return;
+        }
+
+        if (!isEncrypt) shift = -shift; // لفك التشفير نعكس الرقم
+
+        let result = "";
+        for (let i = 0; i < text.length; i++) {
+            let char = text.charCodeAt(i);
+            result += String.fromCharCode(char + shift);
+        }
+        document.getElementById('result').innerText = result;
+    }
+</script>
+
 </body>
 </html>
-
